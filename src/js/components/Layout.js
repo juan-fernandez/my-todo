@@ -1,7 +1,7 @@
 import React from "react"
 import {connect} from "react-redux"
 import {fetchNews} from "../actions/newsActions"
-
+import {createTodo} from "../actions/todosActions"
 
 @connect((store)=>{
    return {
@@ -18,13 +18,13 @@ export default class Layout extends React.Component{
          event.target.value = "";
       }
    }
+   createTodo(){
+      this.props.dispatch(createTodo({name:"Todo",description:"New todo"}))
+   }
 
    render(){
       const {news, todo} = this.props;
-      console.log(news.news)
-
-
-
+      console.log("todo: ",todo.todo[0])
       return (
             <div class="container jumbotron">
 
@@ -35,7 +35,8 @@ export default class Layout extends React.Component{
                   <p>{news.fetching ? "":news.news.snippet}</p>
                </div>
                <div class="col-md-6">
-
+                  <button onClick={this.createTodo.bind(this)}>Create Todo </button>
+                  <p>{todo.todo.length ? todo.todo[0].name:""}</p>
                </div>
             </div>
       );
