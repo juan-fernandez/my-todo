@@ -10,24 +10,34 @@ import {fetchNews} from "../actions/newsActions"
    }
 })
 export default class Layout extends React.Component{
-   fetchNews(){
-      this.props.dispatch(fetchNews())
+   fetchNews(event){
+
+      if(event.charCode == 13){ // enter
+         const query = event.target.value;
+         this.props.dispatch(fetchNews(query))
+         event.target.value = "";
+      }
    }
 
    render(){
       const {news, todo} = this.props;
       console.log(news.news)
-      if(!news.fetched && !news.fetching){
-         return <button onClick={this.fetchNews.bind(this)}>load news</button>
-      }
-      if(news.fetching){
-         return <p>Loading...</p>
-      }
+
+
 
       return (
-         <div>
-            <p>{news.news.snippet}</p>
-         </div>
+            <div class="container jumbotron">
+
+               <div class="col-md-6">
+                  <input type="text" onKeyPress={this.fetchNews.bind(this)}></input>
+
+                  {news.fetching ? <p>Waiting for response...</p>:""}
+                  <p>{news.fetching ? "":news.news.snippet}</p>
+               </div>
+               <div class="col-md-6">
+
+               </div>
+            </div>
       );
    }
 }
