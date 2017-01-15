@@ -18,7 +18,7 @@ export default class Modal extends React.Component {
    }
 
   render() {
-    const {inputFields, buttons, text, action, updateValue  } = this.props;
+    const {hidden,inputFields, buttons, text, action, updateValue  } = this.props;
 
     const inputs = [];
     for(const key of Object.keys(inputFields)){
@@ -34,7 +34,7 @@ export default class Modal extends React.Component {
     return (
 
       <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">{buttons.openModal}</button>
+        <button type="button" class={hidden ? "btn btn-primary hidden":"btn btn-primary"} data-toggle="modal" data-target="#myModal">{buttons.openModal}</button>
 
         <div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">

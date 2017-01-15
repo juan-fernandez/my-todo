@@ -7,7 +7,7 @@ export default class TodoList extends React.Component {
    }
 
    render() {
-      const {list,action_delete} = this.props;
+      const {list,action_delete,action_edit} = this.props;
 
       if(list.fetching){
          return <div>Uploading info...</div>
@@ -15,7 +15,7 @@ export default class TodoList extends React.Component {
       if(list.fetched){
 
          const todoList = list.todo.map((todo,index)=>{
-            return <Item action_delete={action_delete} todo_id={todo.id} key={todo.id} content={todo.todo_info}></Item>
+            return <Item action_edit={action_edit} action_delete={action_delete} todo_id={todo.id} key={todo.id} content={todo.todo_info}></Item>
          })
          return <div style={this.props.style}>{todoList}</div>
       }

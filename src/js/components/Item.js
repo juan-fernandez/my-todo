@@ -7,8 +7,13 @@ export default class Item extends React.Component {
    }
 
    deleteTodo(event){
-      console.log("event",event)
+
       this.props.action_delete(event.target.id)
+   }
+   editTodo(event){
+      const todo_id = event.target.id.slice(4); //without 'edit'
+
+      this.props.action_edit(todo_id)
    }
 
    render() {
@@ -17,6 +22,7 @@ export default class Item extends React.Component {
       const {marginButtons}={
          margin: '20px',
       }
+
       const elements = [];
       for(const key_id of Object.keys(content)){
 
@@ -28,7 +34,7 @@ export default class Item extends React.Component {
          <div class="panel panel-primary">
 
             <div class="panel-heading">
-                  <i class="fa fa-pencil-square-o"></i> 
+                  <i onClick={this.editTodo.bind(this)} id={"edit"+todo_id} class="fa fa-pencil-square-o"></i>
                   <i onClick={this.deleteTodo.bind(this)} id={todo_id} class="fa fa-trash-o close"></i>
             </div>
             {elements}

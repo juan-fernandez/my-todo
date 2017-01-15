@@ -19,7 +19,9 @@ export default class Layout extends React.Component{
          new_todo_info:{
             Name:"",
             Description:""
-         }
+         },
+         editTodo: false,
+         editTodo_id:null
       }
 
    }
@@ -47,6 +49,12 @@ export default class Layout extends React.Component{
 
       this.props.dispatch(deleteTodo(todo_id))
    }
+   editTodo(todo_id){
+      console.log("layout edit",todo_id)
+      this.setState({editTodo:true,editTodo_id:todo_id});
+      //this.props.dispatch(deleteTodo(todo_id))
+      
+   }
 
    render(){
       const {news, todo} = this.props;
@@ -63,16 +71,21 @@ export default class Layout extends React.Component{
       const todoStyle={
          marginTop: '15px'
       }
+      const edit_buttons = {
+         action: "Edit",
+         openModal: "Edit todo",
+         close: "Cancel"
+      }
 
       return (
             <div class="container-fluid jumbotron">
-
+               <Modal hidden={true} updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
 
                <div class="col-md-6 col-xs-12">
                   <h3> Manage your to-dos </h3>
-                  <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
+                  <Modal hidden={false} updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
 
-                  <TodoList action_delete={this.deleteTodo.bind(this)} style={todoStyle} list={todo}></TodoList>
+                  <TodoList action_edit={this.editTodo.bind(this)} action_delete={this.deleteTodo.bind(this)} style={todoStyle} list={todo}></TodoList>
                </div>
                <div class="col-md-6 col-xs-12">
                   <h3> Look for headlines </h3>
