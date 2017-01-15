@@ -44,14 +44,13 @@ export default class Layout extends React.Component{
       this.forceUpdate()
    }
    deleteTodo(todo_id){
-      console.log("event delete:",todo_id)
+
       this.props.dispatch(deleteTodo(todo_id))
    }
 
    render(){
       const {news, todo} = this.props;
 
-      console.log("new todos:",todo)
 
       const buttons = {
          action: "Create",
@@ -68,17 +67,20 @@ export default class Layout extends React.Component{
       return (
             <div class="container-fluid jumbotron">
 
+
                <div class="col-md-6 col-xs-12">
+                  <h3> Manage your to-dos </h3>
+                  <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
+
+                  <TodoList action_delete={this.deleteTodo.bind(this)} style={todoStyle} list={todo}></TodoList>
+               </div>
+               <div class="col-md-6 col-xs-12">
+                  <h3> Look for headlines </h3>
                   <input type="text" onKeyPress={this.fetchNews.bind(this)}></input>
 
                   {news.fetching ? <p>Waiting for response...</p>:""}
                   <p>{news.fetching ? "":news.news.snippet}</p>
 
-               </div>
-               <div class="col-md-6 col-xs-12">
-                  <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
-
-                  <TodoList action_delete={this.deleteTodo.bind(this)} style={todoStyle} list={todo}></TodoList>
                </div>
             </div>
       );

@@ -22,7 +22,7 @@ export default class Modal extends React.Component {
 
     const inputs = [];
     for(const key of Object.keys(inputFields)){
-      //console.log(key,inputFields[key])
+
       inputs.push(
          <div key={key} class="form-group">
            <label for={key}>{key}</label>
