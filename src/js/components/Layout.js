@@ -3,7 +3,7 @@ import {connect} from "react-redux"
 import {fetchNews} from "../actions/newsActions"
 import {createTodo} from "../actions/todosActions"
 import Modal from "./Modal"
-
+import TodoList from "./TodoList"
 
 @connect((store)=>{
    return {
@@ -31,7 +31,7 @@ export default class Layout extends React.Component{
       }
    }
    createTodo(){
-      console.log('received create todo',this.state.new_todo_info)
+
       this.props.dispatch(createTodo(this.state.new_todo_info))
       this.setState({new_todo_info:{Name:"",Description:""}})
    }
@@ -42,7 +42,7 @@ export default class Layout extends React.Component{
 
    render(){
       const {news, todo} = this.props;
-      console.log("todo",todo)
+
       const buttons = {
          action: "Create",
          openModal: "Create todo",
@@ -51,23 +51,23 @@ export default class Layout extends React.Component{
       const text={
          header: "New todo"
       }
-      const todoList = todo.todo.map((todo)=>{
-         return <div key={todo.Name}><p>Name: {todo.Name}</p><p>Description: {todo.Description} </p></div>
-      })
+      const todoStyle={
+         marginTop: '15px'
+      }
 
       return (
-            <div class="container jumbotron">
+            <div class="container-fluid jumbotron">
 
-               <div class="col-md-6">
+               <div class="col-md-6 col-xs-12">
                   <input type="text" onKeyPress={this.fetchNews.bind(this)}></input>
 
                   {news.fetching ? <p>Waiting for response...</p>:""}
                   <p>{news.fetching ? "":news.news.snippet}</p>
 
                </div>
-               <div class="col-md-6">
+               <div class="col-md-6 col-xs-12">
                   <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
-                  {todoList}
+                  <TodoList style={todoStyle} list={todo.todo}></TodoList>
                </div>
             </div>
       );
