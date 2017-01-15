@@ -7,16 +7,21 @@ export default class TodoList extends React.Component {
    }
 
    render() {
-      const {list} = this.props;
-      if(!list.length){
-         return <div></div>;
+      const {list,action_delete} = this.props;
+      console.log("props todolist: ",list)
+      if(list.fetching){
+         return <div>Uploading info...</div>
       }
-      const todoList = list.map((todo,index)=>{
-         return <Item key={index} content={todo}></Item>
-      })
-
+      if(list.fetched){
+         console.log("list.todo",list.todo)
+         const todoList = list.todo.map((todo,index)=>{
+            return <Item action_delete={action_delete} todo_id={todo.id} key={todo.id} content={todo.todo_info}></Item>
+         })
+         return <div style={this.props.style}>{todoList}</div>
+      }
+      
       return (
-         <div style={this.props.style}>{todoList}</div>
+         <div style={this.props.style}></div>
       )
    }
 }

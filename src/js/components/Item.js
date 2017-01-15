@@ -6,20 +6,29 @@ export default class Item extends React.Component {
       super();
    }
 
+   deleteTodo(event){
+
+      this.props.action_delete(event.target.id)
+   }
+
    render() {
-      const {content} = this.props;
+      const {todo_id,content} = this.props;
+
       const elements = [];
-      for(const key of Object.keys(content)){
+      for(const key_id of Object.keys(content)){
 
          elements.push(
 
 
-            <div key={key} class="panel-body">{content[key]}</div>
+            <div key={key_id} class="panel-body">{content[key_id]}</div>
 
          )
       }
       return(
-         <div class="panel panel-success">{elements}</div>
+         <div class="panel panel-success">
+            {elements}
+            <input onClick={this.deleteTodo.bind(this)} id={todo_id} value="Delete" type="button"></input>
+         </div>
       )
    }
 }

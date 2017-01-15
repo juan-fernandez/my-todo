@@ -1,7 +1,7 @@
 import React from "react"
 import {connect} from "react-redux"
 import {fetchNews} from "../actions/newsActions"
-import {createTodo} from "../actions/todosActions"
+import {createTodo,fetchTodos,deleteTodo} from "../actions/todosActions"
 import Modal from "./Modal"
 import TodoList from "./TodoList"
 
@@ -21,6 +21,10 @@ export default class Layout extends React.Component{
             Description:""
          }
       }
+
+   }
+   componentWillMount(){
+      this.props.dispatch(fetchTodos());
    }
    fetchNews(event){
 
@@ -39,9 +43,15 @@ export default class Layout extends React.Component{
       this.state.new_todo_info[field_key] = field_value;
       this.forceUpdate()
    }
+   deleteTodo(todo_id){
+      console.log("event delete:",todo_id)
+      this.props.dispatch(deleteTodo(todo_id))
+   }
 
    render(){
       const {news, todo} = this.props;
+
+      console.log("new todos:",todo)
 
       const buttons = {
          action: "Create",
@@ -67,7 +77,8 @@ export default class Layout extends React.Component{
                </div>
                <div class="col-md-6 col-xs-12">
                   <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
-                  <TodoList style={todoStyle} list={todo.todo}></TodoList>
+
+                  <TodoList action_delete={this.deleteTodo.bind(this)} style={todoStyle} list={todo}></TodoList>
                </div>
             </div>
       );
