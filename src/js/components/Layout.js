@@ -2,6 +2,8 @@ import React from "react"
 import {connect} from "react-redux"
 import {fetchNews} from "../actions/newsActions"
 import {createTodo} from "../actions/todosActions"
+import Modal from "./Modal"
+
 
 @connect((store)=>{
    return {
@@ -10,6 +12,16 @@ import {createTodo} from "../actions/todosActions"
    }
 })
 export default class Layout extends React.Component{
+
+   constructor(){
+      super();
+      this.state={
+         new_todo_info:{
+            Name:"",
+            Description:""
+         }
+      }
+   }
    fetchNews(event){
 
       if(event.charCode == 13){ // enter
@@ -19,12 +31,30 @@ export default class Layout extends React.Component{
       }
    }
    createTodo(){
-      this.props.dispatch(createTodo({name:"Todo",description:"New todo"}))
+      console.log('received create todo',this.state.new_todo_info)
+      this.props.dispatch(createTodo(this.state.new_todo_info))
+      this.setState({new_todo_info:{Name:"",Description:""}})
+   }
+   updateInputs(field_key,field_value){
+      this.state.new_todo_info[field_key] = field_value;
+      this.forceUpdate()
    }
 
    render(){
       const {news, todo} = this.props;
-      console.log("todo: ",todo.todo[0])
+      console.log("todo",todo)
+      const buttons = {
+         action: "Create",
+         openModal: "Create todo",
+         close: "Cancel"
+      }
+      const text={
+         header: "New todo"
+      }
+      const todoList = todo.todo.map((todo)=>{
+         return <div key={todo.Name}><p>Name: {todo.Name}</p><p>Description: {todo.Description} </p></div>
+      })
+
       return (
             <div class="container jumbotron">
 
@@ -33,10 +63,11 @@ export default class Layout extends React.Component{
 
                   {news.fetching ? <p>Waiting for response...</p>:""}
                   <p>{news.fetching ? "":news.news.snippet}</p>
+
                </div>
                <div class="col-md-6">
-                  <button onClick={this.createTodo.bind(this)}>Create Todo </button>
-                  <p>{todo.todo.length ? todo.todo[0].name:""}</p>
+                  <Modal updateValue={this.updateInputs.bind(this)} inputFields={this.state.new_todo_info} buttons={buttons} text={text} action={this.createTodo.bind(this)}></Modal>
+                  {todoList}
                </div>
             </div>
       );
